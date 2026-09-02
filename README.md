@@ -1,4 +1,4 @@
-# github-actions-aws-s3
+# Github-actions-aws-s3
 
 This readme explains the process used to establish a trust relationship between GitHub, GitHub Actions and AWS. 
 It also shows the steps to set up the IAM role for the identity provider to be able to execute actions on AWS resosurces.
@@ -14,7 +14,7 @@ It also shows the steps to set up the IAM role for the identity provider to be a
 7. Add provider
 8. Verify the provider. You should see something like this:
 
-'''
+```
 Provider
 OpenID Connect
 
@@ -24,7 +24,7 @@ token.actions.githubusercontent.com
 Audience:
 sts.amazonaws.com
 
-'''
+```
 
 documentation on this can be found : https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws
 
@@ -48,7 +48,8 @@ GitHub branch: main  (we are pushing only to "main" branch)
 7. Create inine policy
 8. For the bukcet level: ListBucket
 9. For Object level : s3:GetObject, s3:PutObject, s3:DeleteObject
-''' JSON
+
+``` JSON
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -70,5 +71,42 @@ GitHub branch: main  (we are pushing only to "main" branch)
     }
   ]
 }
-''''
+```
+
+10. Trust relationship should look something like this:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Federated": "arn:aws:iam::988079434395:oidc-provider/token.actions.githubusercontent.com"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+                "StringEquals": {
+                    "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+                    "token.actions.githubusercontent.com:sub": "repo:Dekasrepo@181901279/github-actions-aws-s3@1354510926:ref:refs/heads/main"
+                }
+            }
+        }
+    ]
+}
+
+```
+
+## Push to GitHub and activate GitHub Actiona
+1. git init
+2. git add .
+3. git commit -m "my first commit" #choose your preferred commit message
+4. git branch -M main
+5. git remote add origin https://github.com/Dekasrepo/github-actions-aws-s3.git #for new repo
+6. git push -u origin main
+
+
+## Successful Deployment
+![home screen of static website]
+(<Screenshot 2026-09-02 at 13.52.11.png>)
 
