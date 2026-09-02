@@ -107,6 +107,6 @@ GitHub branch: main  (we are pushing only to "main" branch)
 
 
 ## Successful Deployment
-![home screen of static website]
-(<Screenshot 2026-09-02 at 13.52.11.png>)
+<img width="658" height="491" alt="Screenshot 2026-09-02 at 13 52 11" src="https://github.com/user-attachments/assets/76784e4d-6267-4cab-bdbe-f373535ad460" />
+
 
