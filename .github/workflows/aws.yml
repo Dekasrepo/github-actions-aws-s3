@@ -24,7 +24,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
        role-to-assume: arn:aws:iam::988079434395:role/github-action-s3-object
-       aws_region: ${{ env.AWS_REGION }}
+       aws-region: ${{ env.AWS_REGION }}
 
     - name: Copy files to s3
       run: |
