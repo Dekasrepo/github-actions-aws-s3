@@ -1,0 +1,32 @@
+name: Deploy to Amazon s3
+
+on: 
+  push:
+    branches: ["main"]
+
+env:
+  AWS_REGION: eu-west-2
+
+
+permissions:
+  id-tokens: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials via OIDC
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+       role-to-assume: arn:aws:iam::988079434395:role/github-action-s3-object
+       aws_region: ${{ env.AWS_REGION }}
+
+    - name: Copy files to s3
+      run: |
+        aws s3 sync . s3://github-actions-aws-s3 --delete
+
